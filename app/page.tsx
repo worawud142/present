@@ -533,6 +533,14 @@ export default function Home() {
           )
             return;
           const r = e.currentTarget.getBoundingClientRect();
+          e.currentTarget.style.setProperty(
+            '--hero-x',
+            `${((e.clientX - r.left) / r.width - 0.5) * 18}px`,
+          );
+          e.currentTarget.style.setProperty(
+            '--hero-y',
+            `${((e.clientY - r.top) / r.height - 0.5) * 18}px`,
+          );
           portrait.current?.style.setProperty(
             '--mx',
             `${(e.clientX - r.width / 2) / 45}px`,
@@ -543,10 +551,15 @@ export default function Home() {
           );
         }}
         onPointerLeave={() => {
+          document.getElementById('intro')?.style.setProperty('--hero-x', '0px');
+          document.getElementById('intro')?.style.setProperty('--hero-y', '0px');
           portrait.current?.style.setProperty('--mx', '0px');
           portrait.current?.style.setProperty('--my', '0px');
         }}
       >
+        <div className="hero-aurora" aria-hidden="true" />
+        <div className="hero-orbit hero-orbit-one" aria-hidden="true" />
+        <div className="hero-orbit hero-orbit-two" aria-hidden="true" />
         <nav className="hero-nav flex items-center justify-between">
           <button onClick={() => go(2)} className="nav-link">
             เกี่ยวกับผม
@@ -567,6 +580,10 @@ export default function Home() {
             ผลลัพธ์
           </button>
         </nav>
+        <div className="hero-edition">
+          <span>TEACHING PORTFOLIO</span>
+          <b>2567 — 2569</b>
+        </div>
         <div className="hero-title">
           <span className="hero-kicker">
             การเตรียมความพร้อมและพัฒนาอย่างเข้ม ครั้งที่ 4 · โรงเรียนบ้านขัวก่าย
@@ -578,6 +595,46 @@ export default function Home() {
             </span>
           </h1>
           <span className="hero-surname">มุงธิสาร</span>
+          <span className="hero-role">COMPUTER · TEACHER · CREATOR</span>
+        </div>
+        <figure className="portrait" ref={portrait}>
+          <img
+            src="/photos/image1.webp"
+            alt="นายวรวุฒิ มุงธิสาร ครูผู้ช่วย"
+            fetchPriority="high"
+          />
+          <figcaption>
+            <span>COMPUTER EDUCATION</span>
+            <ArrowUpRight />
+          </figcaption>
+        </figure>
+        <button
+          className="hero-proof hero-proof-award"
+          onClick={() => setCertificate(certificateGroups.achievements[0])}
+        >
+          <img src="/certificates/robotics-champion.png" alt="" />
+          <span>
+            <small>STUDENT OUTCOME</small>
+            <b>ชนะเลิศหุ่นยนต์</b>
+            <em>เหรียญทอง · ม.1–ม.3</em>
+          </span>
+          <ArrowUpRight size={18} />
+        </button>
+        <button
+          className="hero-proof hero-proof-practice"
+          onClick={() => setCertificate(certificateGroups.achievements[1])}
+        >
+          <img src="/certificates/best-practice-indigo.jpg" alt="" />
+          <span>
+            <small>BEST PRACTICE</small>
+            <b>สีสวยด้วยคราม</b>
+            <em>ระดับคุณภาพดีเยี่ยม</em>
+          </span>
+          <ArrowUpRight size={18} />
+        </button>
+        <div className="hero-evidence" aria-label="เกียรติบัตรเด่น 18 รายการ">
+          <strong>18</strong>
+          <span>หลักฐานเด่น<br />จากผลงานจริง</span>
         </div>
         <div className="hero-bottom">
           <p>
@@ -588,17 +645,6 @@ export default function Home() {
             <b>และการเติบโตในวิชาชีพครู</b>
             <small>ช่วงรายงาน 1 พ.ย. 2567 — 31 ต.ค. 2569</small>
           </p>
-          <figure className="portrait" ref={portrait}>
-            <img
-              src="/photos/image1.webp"
-              alt="นายวรวุฒิ มุงธิสาร ครูผู้ช่วย"
-              fetchPriority="high"
-            />
-            <figcaption>
-              <span>COMPUTER EDUCATION</span>
-              <ArrowUpRight />
-            </figcaption>
-          </figure>
           <button onClick={() => go(1)} className="gradient-pill">
             สำรวจผลงาน <ArrowDown size={20} />
           </button>
