@@ -2021,6 +2021,191 @@ main {
     width: 100%;
   }
 }
-.gradient-pill { background: linear-gradient(123deg, #4b167f, #842393 42%, #6932af 70%, #974610); }
-.outline-pill { border-color: #866d9c; }
-.marquee-row button > span { background: #20132ae6; }
+.gradient-pill {
+  background: linear-gradient(
+    123deg,
+    #4b167f,
+    #842393 42%,
+    #6932af 70%,
+    #974610
+  );
+}
+.outline-pill {
+  border-color: #866d9c;
+}
+.marquee-row button > span {
+  background: #20132ae6;
+}
+
+/* Certificates and evidence-backed work. */
+.achievements-section {
+  min-height: 100svh;
+  padding: 7vh 5vw 10vh;
+  background: #201a2b;
+  color: #fff;
+}
+.achievements-section .section-top,
+.achievements-section .source-note {
+  color: #d9cee5;
+}
+.achievements-heading {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: end;
+  gap: 4vw;
+  margin: 2vh 0 4vh;
+}
+.achievements-heading h2 {
+  margin: 0;
+  font-size: clamp(58px, 7vw, 132px);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+.achievements-heading h2 span {
+  margin-left: 0.15em;
+  color: #c99cea;
+}
+.achievements-heading p {
+  margin: 0 0 1.3vh;
+  max-width: 660px;
+  color: #e4d9ed;
+  font-size: clamp(22px, 1.55vw, 30px);
+  line-height: 1.65;
+}
+.achievements-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  grid-template-rows: repeat(2, minmax(230px, 31vh));
+  gap: 16px;
+}
+.achievement-card {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #4e425d;
+  border-radius: 28px;
+  background: #2d2638;
+  color: #fff;
+  text-align: left;
+  transition:
+    transform 0.25s,
+    border-color 0.25s;
+}
+.achievement-card:hover {
+  transform: translateY(-4px);
+  border-color: #b58bd0;
+}
+.achievement-1 {
+  grid-row: 1 / 3;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1.4fr auto;
+}
+.achievement-2 {
+  grid-column: 2 / 4;
+}
+.achievement-image {
+  position: relative;
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #e7e0ec;
+}
+.achievement-image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.achievement-1 .achievement-image > img,
+.achievement-3 .achievement-image > img,
+.achievement-4 .achievement-image > img {
+  object-fit: contain;
+}
+.achievement-expand {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  color: #392647;
+  box-shadow: 0 8px 24px #17101f30;
+}
+.achievement-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: clamp(18px, 1.6vw, 30px);
+}
+.achievement-copy small {
+  color: #d7bce7;
+  font-size: clamp(13px, 0.85vw, 16px);
+  line-height: 1.45;
+}
+.achievement-copy strong {
+  font-size: clamp(23px, 1.65vw, 32px);
+  font-weight: 500;
+  line-height: 1.4;
+}
+.achievement-copy > span {
+  color: #e4d9ed;
+  font-size: clamp(16px, 1.05vw, 21px);
+  line-height: 1.55;
+}
+@media (max-width: 1100px) {
+  .achievements-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, minmax(270px, auto));
+  }
+  .achievement-1,
+  .achievement-2 {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .achievement-1 {
+    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-rows: auto;
+  }
+}
+@media (max-width: 760px) {
+  .achievements-section {
+    padding: 55px 18px 100px;
+  }
+  .achievements-section > .section-top > span:last-child {
+    display: none;
+  }
+  .achievements-heading {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin: 24px 0 30px;
+  }
+  .achievements-heading h2 {
+    font-size: 50px;
+  }
+  .achievements-heading p {
+    font-size: 20px;
+  }
+  .achievements-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+  }
+  .achievement-card,
+  .achievement-1 {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(260px, 48vh) auto;
+  }
+  .achievement-copy strong {
+    font-size: 25px;
+  }
+  .achievement-copy > span {
+    font-size: 18px;
+  }
+}

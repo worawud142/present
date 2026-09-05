@@ -30,6 +30,7 @@ const stops = [
   { id: 'project-1', name: 'สื่อคอมพิวเตอร์', note: 9 },
   { id: 'project-2', name: 'ฝึกทักษะการใช้เมาส์', note: 10 },
   { id: 'project-3', name: 'กิจกรรมหุ่นยนต์', note: 11 },
+  { id: 'achievements', name: 'เกียรติบัตรและผลงาน', note: 13 },
   { id: 'outcomes', name: 'ผลที่เกิดขึ้น', note: 17 },
   { id: 'next', name: 'ก้าวต่อไป', note: 18 },
   { id: 'thanks', name: 'ขอบคุณ', note: 19 },
@@ -97,6 +98,34 @@ const galleryLabels: Record<number, string> = {
   40: 'พัฒนาตนเอง',
   59: 'แบ่งปันความรู้',
 };
+const achievements = [
+  {
+    id: 39,
+    type: 'เกียรติบัตร',
+    title: 'การพัฒนาตนเองในวิชาชีพ',
+    description:
+      'หลักฐานการเข้าร่วมพัฒนาความรู้และประสบการณ์ เพื่อนำกลับมาประยุกต์ใช้กับการปฏิบัติงาน',
+  },
+  {
+    id: 44,
+    type: 'ความภาคภูมิใจร่วมกับผู้เรียน',
+    title: 'ส่งเสริมผู้เรียนให้แสดงศักยภาพ',
+    description:
+      'ร่วมดูแล สนับสนุน และชื่นชมความสำเร็จของผู้เรียน โดยมีภาพเกียรติบัตรประกอบในภาคผนวก',
+  },
+  {
+    id: 45,
+    type: 'ผลงานด้านการสอน',
+    title: 'แผนการจัดการเรียนรู้',
+    description: 'รายวิชาเทคโนโลยี (วิทยาการคำนวณ) ระดับชั้นประถมศึกษาปีที่ 4',
+  },
+  {
+    id: 52,
+    type: 'สื่อดิจิทัล',
+    title: 'แอปพลิเคชันฝึกใช้เมาส์',
+    description: 'กิจกรรมโต้ตอบสำหรับฝึกคลิก คลิกขวา และดับเบิลคลิกผ่านการลงมือทำ',
+  },
+] as const;
 export default function Home() {
   const root = useRef<HTMLElement>(null),
     marquee = useRef<HTMLElement>(null),
@@ -163,7 +192,10 @@ export default function Home() {
         'สรุปกระบวนการวิเคราะห์หลักสูตร ออกแบบกิจกรรม และติดตามจากชิ้นงาน จากนั้นอธิบายการจัดห้องคอมพิวเตอร์และบทบาทครูที่ปรึกษา ม.1 ปิดท้ายด้วยการอบรม Arduino หุ่นยนต์ สื่อดิจิทัล และงานวิชาการที่นำมาประยุกต์ใช้',
       'practice-more':
         'เล่าการแลกเปลี่ยนเรียนรู้และช่วยเหลืองานเทคโนโลยีกับเพื่อนครู งานประชาสัมพันธ์ เวรประจำวัน และงานส่งเสริมสุขภาพ ต่อด้วยการสื่อสารและใช้เทคโนโลยีให้เหมาะกับผู้เรียน โดยอ้างอิงบทบาทที่ระบุในรายงาน',
+      achievements:
+        'นำเสนอหลักฐาน 4 ส่วน ได้แก่ เกียรติบัตรการพัฒนาตนเอง ความภาคภูมิใจร่วมกับผู้เรียน แผนการจัดการเรียนรู้ และแอปพลิเคชันฝึกใช้เมาส์ โดยระบุเฉพาะข้อมูลที่อ่านได้จากภาพและรายงาน หากคณะกรรมการต้องการรายละเอียด สามารถคลิกภาพเพื่อขยายได้',
     };
+    const presenterPhotos: Record<string, number> = { achievements: 39 };
     const selected = stops[active];
     liveState.current = {
       index: active,
@@ -171,7 +203,10 @@ export default function Home() {
       title: selected.name,
       note: scripts[selected.id] || slides[selected.note].note,
       nextTitle: stops[active + 1]?.name || null,
-      photoId: slides[selected.note].photos[0]?.id || 55,
+      photoId:
+        presenterPhotos[selected.id] ||
+        slides[selected.note].photos[0]?.id ||
+        55,
     };
     channel.current?.postMessage({ type: 'state', state: liveState.current });
   }, [active]);
@@ -595,6 +630,50 @@ export default function Home() {
             </article>
           ))}
         </div>
+      </section>
+      <section id="achievements" className="scene achievements-section">
+        <div className="section-top flex justify-between">
+          <span>CERTIFICATES &amp; WORK / หลักฐานจากรายงาน</span>
+          <span>คลิกภาพเพื่อขยาย</span>
+        </div>
+        <div className="achievements-heading">
+          <h2>
+            เกียรติบัตร
+            <br />
+            และผลงาน<span>↗</span>
+          </h2>
+          <p>ร่องรอยของการพัฒนาตนเอง การส่งเสริมผู้เรียน และการสร้างสื่อเพื่อการเรียนรู้</p>
+        </div>
+        <div className="achievements-grid">
+          {achievements.map((item, index) => (
+            <button
+              key={item.id}
+              className={`achievement-card achievement-${index + 1}`}
+              onClick={() => openPhoto(item.id, item.title)}
+            >
+              <span className="achievement-image">
+                <img
+                  src={`/photos/image${item.id}.webp`}
+                  alt={item.title}
+                  loading="lazy"
+                />
+                <span className="achievement-expand">
+                  <Plus size={21} />
+                </span>
+              </span>
+              <span className="achievement-copy">
+                <small>
+                  {String(index + 1).padStart(2, '0')} / {item.type}
+                </small>
+                <strong>{item.title}</strong>
+                <span>{item.description}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className="source-note">
+          ภาพเกียรติบัตรและผลงานจากภาคผนวกรายงานการประเมินครั้งที่ 4
+        </p>
       </section>
       <section id="outcomes" className="scene outcomes">
         <div className="section-top flex justify-between">
