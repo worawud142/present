@@ -30,7 +30,9 @@ const stops = [
   { id: 'project-1', name: 'สื่อคอมพิวเตอร์', note: 9 },
   { id: 'project-2', name: 'ฝึกทักษะการใช้เมาส์', note: 10 },
   { id: 'project-3', name: 'กิจกรรมหุ่นยนต์', note: 11 },
-  { id: 'achievements', name: 'เกียรติบัตรและผลงาน', note: 13 },
+  { id: 'achievements', name: 'ผลงานและความสำเร็จ', note: 13 },
+  { id: 'certificates', name: 'การพัฒนาวิชาชีพ', note: 13 },
+  { id: 'recognition', name: 'เกียรติยศและบทบาท', note: 14 },
   { id: 'outcomes', name: 'ผลที่เกิดขึ้น', note: 17 },
   { id: 'next', name: 'ก้าวต่อไป', note: 18 },
   { id: 'thanks', name: 'ขอบคุณ', note: 19 },
@@ -98,34 +100,128 @@ const galleryLabels: Record<number, string> = {
   40: 'พัฒนาตนเอง',
   59: 'แบ่งปันความรู้',
 };
-const achievements = [
-  {
-    id: 39,
-    type: 'เกียรติบัตร',
-    title: 'การพัฒนาตนเองในวิชาชีพ',
-    description:
-      'หลักฐานการเข้าร่วมพัฒนาความรู้และประสบการณ์ เพื่อนำกลับมาประยุกต์ใช้กับการปฏิบัติงาน',
-  },
-  {
-    id: 44,
-    type: 'ความภาคภูมิใจร่วมกับผู้เรียน',
-    title: 'ส่งเสริมผู้เรียนให้แสดงศักยภาพ',
-    description:
-      'ร่วมดูแล สนับสนุน และชื่นชมความสำเร็จของผู้เรียน โดยมีภาพเกียรติบัตรประกอบในภาคผนวก',
-  },
-  {
-    id: 45,
-    type: 'ผลงานด้านการสอน',
-    title: 'แผนการจัดการเรียนรู้',
-    description: 'รายวิชาเทคโนโลยี (วิทยาการคำนวณ) ระดับชั้นประถมศึกษาปีที่ 4',
-  },
-  {
-    id: 52,
-    type: 'สื่อดิจิทัล',
-    title: 'แอปพลิเคชันฝึกใช้เมาส์',
-    description: 'กิจกรรมโต้ตอบสำหรับฝึกคลิก คลิกขวา และดับเบิลคลิกผ่านการลงมือทำ',
-  },
-] as const;
+type Certificate = {
+  src: string;
+  category: string;
+  title: string;
+  detail: string;
+};
+const certificateGroups: Record<string, readonly Certificate[]> = {
+  achievements: [
+    {
+      src: '/certificates/robotics-champion.png',
+      category: 'ชนะเลิศ · เหรียญทอง',
+      title: 'การแข่งขันหุ่นยนต์ระดับพื้นฐาน ม.1–ม.3',
+      detail: 'ครูผู้สอนนักเรียน · งานศิลปหัตถกรรมนักเรียน ครั้งที่ 73 ปีการศึกษา 2568',
+    },
+    {
+      src: '/certificates/best-practice-indigo.jpg',
+      category: 'Best Practice · ดีเยี่ยม',
+      title: 'ผลงาน “สีสวยด้วยคราม”',
+      detail: 'ครูที่ปรึกษาผลงาน · บ้านนักวิทยาศาสตร์น้อย ประเทศไทย ปีการศึกษา 2568',
+    },
+    {
+      src: '/certificates/comic-strip-gold.png',
+      category: 'เหรียญทอง · รองชนะเลิศอันดับ 1',
+      title: 'การสร้างการ์ตูนเรื่องสั้น Comic Strip',
+      detail: 'ครูผู้สอนนักเรียน ระดับ ม.1–ม.3 · ปีการศึกษา 2567',
+    },
+    {
+      src: '/certificates/computer-graphic-gold.png',
+      category: 'เหรียญทอง',
+      title: 'การ์ตูนด้วยโปรแกรมคอมพิวเตอร์กราฟิก',
+      detail: 'ครูผู้สอนนักเรียน ระดับ ป.1–ป.3 · ปีการศึกษา 2567',
+    },
+    {
+      src: '/certificates/health-quiz-gold.png',
+      category: 'เหรียญทอง · รองชนะเลิศอันดับ 1',
+      title: 'ตอบปัญหาสุขศึกษาและพลศึกษา',
+      detail: 'ครูผู้สอนนักเรียน ระดับ ป.1–ป.6 · ปีการศึกษา 2568',
+    },
+    {
+      src: '/certificates/paint-secondary-gold.png',
+      category: 'เหรียญทอง · รองชนะเลิศอันดับ 1',
+      title: 'วาดภาพด้วยโปรแกรม Paint',
+      detail: 'ครูผู้สอนนักเรียนที่มีความบกพร่องทางการเรียนรู้ ระดับ ม.1–ม.3',
+    },
+  ],
+  certificates: [
+    {
+      src: '/certificates/assessment-literacy.jpg',
+      category: 'การวัดและประเมินผล · 12 ชั่วโมง',
+      title: 'การสร้างข้อสอบวัดความฉลาดรู้',
+      detail: 'อบรมออนไลน์ รุ่นที่ 3 · 8–14 ธันวาคม 2567',
+    },
+    {
+      src: '/certificates/digital-pr-ai.png',
+      category: 'สื่อดิจิทัลและ AI',
+      title: 'พัฒนาเครือข่ายประชาสัมพันธ์และผลิตสื่อ',
+      detail: 'อบรมเชิงปฏิบัติการ · 20–21 ธันวาคม 2567',
+    },
+    {
+      src: '/certificates/arduino-media.jpeg',
+      category: 'นวัตกรรมและเทคโนโลยี',
+      title: 'สร้างสรรค์สื่อและนวัตกรรมด้วย Arduino',
+      detail: 'อบรมเชิงปฏิบัติการ · 10–11 กุมภาพันธ์ 2568',
+    },
+    {
+      src: '/certificates/robot-programming.jpeg',
+      category: 'หุ่นยนต์และสิ่งประดิษฐ์',
+      title: 'การเขียนโปรแกรมควบคุมหุ่นยนต์',
+      detail: 'อบรมและแลกเปลี่ยนเรียนรู้ · 17–18 มีนาคม 2568',
+    },
+    {
+      src: '/certificates/blended-learning-ai.jpeg',
+      category: 'Blended Learning',
+      title: 'แพลตฟอร์มการเรียนรู้และ AI ในการสอน',
+      detail: 'อบรมเชิงปฏิบัติการ · 16 สิงหาคม 2568',
+    },
+    {
+      src: '/certificates/obec-content-center-2569.png',
+      category: 'OBEC Content Center',
+      title: 'จัดการเรียนรู้ด้วยเทคโนโลยีดิจิทัล',
+      detail: 'อบรมเชิงปฏิบัติการ · 26 พฤษภาคม 2569',
+    },
+  ],
+  recognition: [
+    {
+      src: '/certificates/outstanding-educator-province.png',
+      category: 'เกียรติยศระดับจังหวัด',
+      title: 'ผู้ประกอบวิชาชีพทางการศึกษาดีเด่น',
+      detail: 'วันครู ครั้งที่ 70 ประจำปี 2569 · ศึกษาธิการจังหวัดสกลนคร',
+    },
+    {
+      src: '/certificates/outstanding-educator-district.png',
+      category: 'เกียรติยศระดับอำเภอ',
+      title: 'ผู้ประกอบวิชาชีพทางการศึกษาดีเด่น',
+      detail: 'วันครู ครั้งที่ 70 ประจำปี 2569 · อำเภอวานรนิวาส',
+    },
+    {
+      src: '/certificates/rov-judge.jpg',
+      category: 'บทบาทกรรมการ',
+      title: 'กรรมการแข่งขัน ROV',
+      detail: 'ระดับประถมศึกษาและมัธยมศึกษา · กิจกรรมวันวิทยาศาสตร์ 2568',
+    },
+    {
+      src: '/certificates/mixed-robot-judge.png',
+      category: 'บทบาทกรรมการตัดสิน',
+      title: 'การแข่งขันหุ่นยนต์ผสม ป.1–ป.6',
+      detail: 'งานศิลปหัตถกรรมนักเรียน ครั้งที่ 73 ปีการศึกษา 2568',
+    },
+    {
+      src: '/certificates/little-scientist-review.jpg',
+      category: 'แลกเปลี่ยนเรียนรู้',
+      title: 'ประเมินผลงานบ้านนักวิทยาศาสตร์น้อย',
+      detail: 'เข้าร่วมนำเสนอ ตรวจ และประเมินผลงาน · 13 มีนาคม 2569',
+    },
+    {
+      src: '/certificates/robotics-trainer.jpg',
+      category: 'บทบาทวิทยากร',
+      title: 'ถอดบทเรียนสู่แผนการเรียนรู้หุ่นยนต์',
+      detail: 'วิทยากรอบรมเชิงปฏิบัติการ · 6–7 สิงหาคม 2569',
+    },
+  ],
+};
 export default function Home() {
   const root = useRef<HTMLElement>(null),
     marquee = useRef<HTMLElement>(null),
@@ -135,6 +231,7 @@ export default function Home() {
     [dockVisible, setDockVisible] = useState(true),
     [detail, setDetail] = useState<number | null>(null),
     [photo, setPhoto] = useState<Photo | null>(null),
+    [certificate, setCertificate] = useState<Certificate | null>(null),
     [notice, setNotice] = useState('');
   const go = useCallback((n: number) => {
     const i = Math.min(stops.length - 1, Math.max(0, n));
@@ -193,9 +290,13 @@ export default function Home() {
       'practice-more':
         'เล่าการแลกเปลี่ยนเรียนรู้และช่วยเหลืองานเทคโนโลยีกับเพื่อนครู งานประชาสัมพันธ์ เวรประจำวัน และงานส่งเสริมสุขภาพ ต่อด้วยการสื่อสารและใช้เทคโนโลยีให้เหมาะกับผู้เรียน โดยอ้างอิงบทบาทที่ระบุในรายงาน',
       achievements:
-        'นำเสนอหลักฐาน 4 ส่วน ได้แก่ เกียรติบัตรการพัฒนาตนเอง ความภาคภูมิใจร่วมกับผู้เรียน แผนการจัดการเรียนรู้ และแอปพลิเคชันฝึกใช้เมาส์ โดยระบุเฉพาะข้อมูลที่อ่านได้จากภาพและรายงาน หากคณะกรรมการต้องการรายละเอียด สามารถคลิกภาพเพื่อขยายได้',
+        'เริ่มจากผลลัพธ์ที่เกิดกับผู้เรียน โดยเน้นรางวัลชนะเลิศการแข่งขันหุ่นยนต์ ผลงาน Best Practice ระดับดีเยี่ยม และรางวัลเหรียญทองจากกิจกรรมคอมพิวเตอร์ สุขศึกษา และการวาดภาพ สามารถคลิกเกียรติบัตรเพื่อขยายได้',
+      certificates:
+        'สรุปการพัฒนาตนเองที่เชื่อมกับงานสอน ได้แก่ การวัดความฉลาดรู้ สื่อดิจิทัลและ AI, Arduino, การเขียนโปรแกรมหุ่นยนต์, Blended Learning และ OBEC Content Center เลือกเล่าสองถึงสามเรื่องที่นำไปใช้จริง',
+      recognition:
+        'นำเสนอเกียรติยศผู้ประกอบวิชาชีพทางการศึกษาดีเด่น ต่อด้วยบทบาทกรรมการการแข่งขัน ROV และหุ่นยนต์ การร่วมประเมินผลงานบ้านนักวิทยาศาสตร์น้อย และบทบาทวิทยากรด้านหุ่นยนต์',
     };
-    const presenterPhotos: Record<string, number> = { achievements: 39 };
+    const presenterPhotos: Record<string, number> = {};
     const selected = stops[active];
     liveState.current = {
       index: active,
@@ -298,6 +399,7 @@ export default function Home() {
         menu ||
         detail !== null ||
         photo ||
+        certificate ||
         e.metaKey ||
         e.ctrlKey ||
         e.altKey
@@ -333,8 +435,49 @@ export default function Home() {
     };
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
-  }, [active, menu, detail, photo, go, fullscreen, openPresenter]);
+  }, [active, menu, detail, photo, certificate, go, fullscreen, openPresenter]);
   const openPhoto = (id: number, caption: string) => setPhoto({ id, caption });
+  const certificateSection = (
+    id: keyof typeof certificateGroups,
+    eyebrow: string,
+    title: string,
+    description: string,
+  ) => (
+    <section id={id} className="scene certificate-section">
+      <div className="section-top flex justify-between">
+        <span>{eyebrow}</span>
+        <span>คลิกภาพเพื่อขยาย · {certificateGroups[id].length} รายการ</span>
+      </div>
+      <div className="certificate-heading">
+        <h2>{title}</h2>
+        <p>{description}</p>
+      </div>
+      <div className="certificate-grid">
+        {certificateGroups[id].map((item, index) => (
+          <button
+            key={item.src}
+            className="certificate-card"
+            onClick={() => setCertificate(item)}
+          >
+            <span className="certificate-image">
+              <img src={item.src} alt={item.title} loading="lazy" />
+              <span className="certificate-expand">
+                <Plus size={20} />
+              </span>
+            </span>
+            <span className="certificate-copy">
+              <small>
+                {String(index + 1).padStart(2, '0')} / {item.category}
+              </small>
+              <strong>{item.title}</strong>
+              <span>{item.detail}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+      <p className="source-note">หลักฐานจากไฟล์เกียรติบัตรที่แนบในแฟ้มประเมิน</p>
+    </section>
+  );
   const competency = (
     id: string,
     title: string,
@@ -631,50 +774,24 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section id="achievements" className="scene achievements-section">
-        <div className="section-top flex justify-between">
-          <span>CERTIFICATES &amp; WORK / หลักฐานจากรายงาน</span>
-          <span>คลิกภาพเพื่อขยาย</span>
-        </div>
-        <div className="achievements-heading">
-          <h2>
-            เกียรติบัตร
-            <br />
-            และผลงาน<span>↗</span>
-          </h2>
-          <p>ร่องรอยของการพัฒนาตนเอง การส่งเสริมผู้เรียน และการสร้างสื่อเพื่อการเรียนรู้</p>
-        </div>
-        <div className="achievements-grid">
-          {achievements.map((item, index) => (
-            <button
-              key={item.id}
-              className={`achievement-card achievement-${index + 1}`}
-              onClick={() => openPhoto(item.id, item.title)}
-            >
-              <span className="achievement-image">
-                <img
-                  src={`/photos/image${item.id}.webp`}
-                  alt={item.title}
-                  loading="lazy"
-                />
-                <span className="achievement-expand">
-                  <Plus size={21} />
-                </span>
-              </span>
-              <span className="achievement-copy">
-                <small>
-                  {String(index + 1).padStart(2, '0')} / {item.type}
-                </small>
-                <strong>{item.title}</strong>
-                <span>{item.description}</span>
-              </span>
-            </button>
-          ))}
-        </div>
-        <p className="source-note">
-          ภาพเกียรติบัตรและผลงานจากภาคผนวกรายงานการประเมินครั้งที่ 4
-        </p>
-      </section>
+      {certificateSection(
+        'achievements',
+        'STUDENT OUTCOMES / ผลงานที่เกิดกับผู้เรียน',
+        'ความสำเร็จของผู้เรียน',
+        'ผลลัพธ์ที่เห็นได้จากการแข่งขัน ชิ้นงาน และการเรียนรู้ที่เปิดโอกาสให้ผู้เรียนแสดงศักยภาพ',
+      )}
+      {certificateSection(
+        'certificates',
+        'PROFESSIONAL GROWTH / การพัฒนาตนเอง',
+        'พัฒนาตนเองอย่างต่อเนื่อง',
+        'พัฒนาความรู้ด้านการวัดผล สื่อดิจิทัล AI, Arduino และหุ่นยนต์อย่างต่อเนื่อง',
+      )}
+      {certificateSection(
+        'recognition',
+        'RECOGNITION & CONTRIBUTION / เกียรติยศและบทบาท',
+        'เกียรติยศและบทบาท',
+        'สะท้อนการทำงานร่วมกับเครือข่ายวิชาชีพ ทั้งในฐานะผู้รับการยกย่อง กรรมการ และวิทยากร',
+      )}
       <section id="outcomes" className="scene outcomes">
         <div className="section-top flex justify-between">
           <span>WHAT WE CREATED</span>
@@ -905,6 +1022,20 @@ export default function Home() {
           {photo && (
             <img src={`/photos/image${photo.id}.webp`} alt={photo.caption} />
           )}
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={!!certificate}
+        onOpenChange={(open) => {
+          if (!open) setCertificate(null);
+        }}
+      >
+        <DialogContent className="lightbox certificate-lightbox">
+          <DialogTitle>{certificate?.title}</DialogTitle>
+          <DialogDescription>
+            {certificate?.category} · {certificate?.detail}
+          </DialogDescription>
+          {certificate && <img src={certificate.src} alt={certificate.title} />}
         </DialogContent>
       </Dialog>
     </main>
