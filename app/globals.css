@@ -2,31 +2,23 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @font-face {
-  font-family: Kanit;
-  src: url('/fonts/Kanit-Regular.ttf');
+  font-family: 'Google Sans';
+  src: url('/fonts/GoogleSans-Variable.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400 700;
   font-display: swap;
 }
 @font-face {
-  font-family: Kanit;
-  src: url('/fonts/Kanit-Medium.ttf');
-  font-weight: 500;
-  font-display: swap;
-}
-@font-face {
-  font-family: Kanit;
-  src: url('/fonts/Kanit-Bold.ttf');
-  font-weight: 700;
-  font-display: swap;
-}
-@font-face {
-  font-family: Kanit;
-  src: url('/fonts/Kanit-Black.ttf');
-  font-weight: 900;
+  font-family: 'Google Sans';
+  src: url('/fonts/GoogleSans-Italic-Variable.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 400 700;
   font-display: swap;
 }
 @theme inline {
-  --font-sans: 'Kanit', sans-serif;
-  --font-heading: 'Kanit', sans-serif;
+  --font-sans: 'Google Sans', sans-serif;
+  --font-mono: 'Google Sans', sans-serif;
+  --font-heading: 'Google Sans', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-popover: var(--popover);
@@ -54,7 +46,8 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--ink);
-  font-family: Kanit, sans-serif;
+  font-family: 'Google Sans', sans-serif;
+  font-optical-sizing: auto;
 }
 button,
 a {
@@ -108,7 +101,7 @@ a {
 }
 .hero h1 {
   font-size: clamp(150px, 21.4vw, 400px);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.085em;
   margin: -1.1vw 0 0;
@@ -329,7 +322,7 @@ main {
 .display-heading {
   font-size: clamp(55px, 8.1vw, 156px);
   line-height: 1.3;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: -0.055em;
   margin: 25px 0 40px;
 }
@@ -516,7 +509,7 @@ main {
 }
 .row-number {
   font-size: clamp(42px, 5.5vw, 106px);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: -0.055em;
   width: 10%;
@@ -604,7 +597,7 @@ main {
 }
 .project-number {
   font-size: clamp(60px, 7vw, 130px);
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: -0.06em;
   line-height: 1;
 }
@@ -766,7 +759,7 @@ main {
 }
 .next-layout h2 {
   font-size: clamp(50px, 7.7vw, 145px);
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: -0.055em;
   line-height: 1.4;
 }
@@ -798,7 +791,7 @@ main {
 }
 .closing-section h2 {
   font-size: clamp(62px, 10vw, 186px);
-  font-weight: 900;
+  font-weight: 700;
   line-height: 1.27;
   letter-spacing: -0.055em;
   margin: 28px 0 30px;
