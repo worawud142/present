@@ -177,7 +177,7 @@ const certificateGroups: Record<string, readonly Certificate[]> = {
       detail: 'อบรมเชิงปฏิบัติการ · 16 สิงหาคม 2568',
     },
     {
-      src: '/certificates/obec-content-center-2569.png',
+      src: '/certificates/obec-content-center-2569.jpg',
       category: 'OBEC Content Center',
       title: 'จัดการเรียนรู้ด้วยเทคโนโลยีดิจิทัล',
       detail: 'อบรมเชิงปฏิบัติการ · 26 พฤษภาคม 2569',
@@ -209,7 +209,7 @@ const certificateGroups: Record<string, readonly Certificate[]> = {
       detail: 'งานศิลปหัตถกรรมนักเรียน ครั้งที่ 73 ปีการศึกษา 2568',
     },
     {
-      src: '/certificates/little-scientist-review.jpg',
+      src: '/certificates/little-scientist-review.png',
       category: 'แลกเปลี่ยนเรียนรู้',
       title: 'ประเมินผลงานบ้านนักวิทยาศาสตร์น้อย',
       detail: 'เข้าร่วมนำเสนอ ตรวจ และประเมินผลงาน · 13 มีนาคม 2569',
