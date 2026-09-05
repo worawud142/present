@@ -609,7 +609,8 @@ export default function Home() {
         </div>
         <figure className="portrait" ref={portrait}>
           <img
-            src="/photos/image1.webp"
+            className="portrait-cutout"
+            src="/photos/portrait-uniform.png"
             alt="นายวรวุฒิ มุงธิสาร ครูผู้ช่วย"
             fetchPriority="high"
           />

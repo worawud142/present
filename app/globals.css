@@ -195,6 +195,12 @@
 .hero .portrait > img {
   border-radius: 181px 181px 22px 22px;
 }
+.hero .portrait > img.portrait-cutout {
+  object-fit: contain;
+  object-position: center;
+  transform: scale(2.7);
+  transform-origin: 50% 50%;
+}
 .hero .portrait figcaption {
   bottom: 17px;
   left: 17px;
