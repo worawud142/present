@@ -2677,14 +2677,19 @@ main {
 }
 .hero h1 {
   margin-top: -1.6vw;
+  font-size: clamp(124px, 16vw, 305px);
   color: #49345f;
   text-shadow: 0 12px 45px #725b9021;
 }
 .hero-surname {
-  right: 7%;
-  bottom: 0.3vw;
+  right: 20%;
+  bottom: 1.4vw;
   color: #5f4870;
   font-weight: 600;
+}
+.hero-role {
+  right: 20.2%;
+  bottom: -0.45vw;
 }
 .hero .portrait {
   z-index: 3;
