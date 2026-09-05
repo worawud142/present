@@ -18,12 +18,15 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { slides, type Photo } from './slides';
+import { PRESENTER_CHANNEL, type PresenterState } from './presenter-state';
 const stops = [
   { id: 'intro', name: 'เริ่มต้น', note: 0 },
   { id: 'story', name: 'ภาพการทำงาน', note: 2 },
   { id: 'about', name: 'รู้จักครูวรวุฒิ', note: 1 },
-  { id: 'values', name: 'การปฏิบัติตน', note: 3 },
-  { id: 'practice', name: 'การปฏิบัติงาน', note: 7 },
+  { id: 'values', name: 'การปฏิบัติตน · 1–3', note: 3 },
+  { id: 'values-more', name: 'การปฏิบัติตน · 4–6', note: 5 },
+  { id: 'practice', name: 'การปฏิบัติงาน · 1–3', note: 7 },
+  { id: 'practice-more', name: 'การปฏิบัติงาน · 4–6', note: 14 },
   { id: 'project-1', name: 'สื่อคอมพิวเตอร์', note: 9 },
   { id: 'project-2', name: 'ฝึกทักษะการใช้เมาส์', note: 10 },
   { id: 'project-3', name: 'กิจกรรมหุ่นยนต์', note: 11 },
@@ -97,25 +100,101 @@ const galleryLabels: Record<number, string> = {
 export default function Home() {
   const root = useRef<HTMLElement>(null),
     marquee = useRef<HTMLElement>(null),
-    about = useRef<HTMLElement>(null),
     portrait = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0),
     [menu, setMenu] = useState(false),
-    [notes, setNotes] = useState(false),
+    [dockVisible, setDockVisible] = useState(true),
     [detail, setDetail] = useState<number | null>(null),
     [photo, setPhoto] = useState<Photo | null>(null),
     [notice, setNotice] = useState('');
   const go = useCallback((n: number) => {
     const i = Math.min(stops.length - 1, Math.max(0, n));
-    document
-      .getElementById(stops[i].id)
-      ?.scrollIntoView({
-        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'instant'
-          : 'smooth',
-        block: 'start',
-      });
+    document.getElementById(stops[i].id)?.scrollIntoView({
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'instant'
+        : 'smooth',
+      block: 'start',
+    });
     history.replaceState(null, '', `#${stops[i].id}`);
+  }, []);
+  const presenterWindow = useRef<Window | null>(null);
+  const channel = useRef<BroadcastChannel | null>(null);
+  const liveState = useRef<PresenterState | null>(null);
+  const activeRef = useRef(active);
+  activeRef.current = active;
+  const openPresenter = useCallback(() => {
+    if (presenterWindow.current && !presenterWindow.current.closed) {
+      presenterWindow.current.focus();
+      return;
+    }
+    const windowRef = window.open(
+      '/presenter',
+      'worawut-presenter',
+      'popup,width=920,height=820',
+    );
+    if (windowRef) {
+      presenterWindow.current = windowRef;
+      setNotice('');
+    } else setNotice('เบราว์เซอร์ปิดกั้นหน้าต่างผู้บรรยาย กรุณาอนุญาตป๊อปอัปแล้วกด N อีกครั้ง');
+  }, []);
+  useEffect(() => {
+    if (typeof BroadcastChannel === 'undefined') return;
+    const connection = new BroadcastChannel(PRESENTER_CHANNEL);
+    channel.current = connection;
+    connection.onmessage = ({ data }) => {
+      if (data?.type === 'request-state' && liveState.current)
+        connection.postMessage({ type: 'state', state: liveState.current });
+      if (data?.type === 'navigate' && (data.delta === 1 || data.delta === -1))
+        go(activeRef.current + data.delta);
+    };
+    return () => {
+      connection.postMessage({ type: 'disconnected' });
+      connection.close();
+      channel.current = null;
+    };
+  }, [go]);
+  useEffect(() => {
+    const scripts: Record<string, string> = {
+      values:
+        'อธิบายการรักษาวินัยและการตรงต่อเวลา โดยยกตัวอย่างหน้าที่เวรประจำวัน จากนั้นเชื่อมกับคุณธรรมและจรรยาบรรณ การมีเมตตา วางตนเหมาะสม และปฏิบัติต่อผู้เรียนอย่างเป็นธรรม สามารถเปิดรายละเอียดแต่ละข้อเพื่อดูภาพประกอบได้',
+      'values-more':
+        'เล่าการใช้ทรัพยากรอย่างพอประมาณและดูแลส่วนรวม ต่อด้วยการช่วยเหลือผู้เรียนระหว่างปฏิบัติงาน และความรับผิดชอบต่อวิชาชีพผ่านการพัฒนาตนเองและการร่วมงานกับเพื่อนครู',
+      practice:
+        'สรุปกระบวนการวิเคราะห์หลักสูตร ออกแบบกิจกรรม และติดตามจากชิ้นงาน จากนั้นอธิบายการจัดห้องคอมพิวเตอร์และบทบาทครูที่ปรึกษา ม.1 ปิดท้ายด้วยการอบรม Arduino หุ่นยนต์ สื่อดิจิทัล และงานวิชาการที่นำมาประยุกต์ใช้',
+      'practice-more':
+        'เล่าการแลกเปลี่ยนเรียนรู้และช่วยเหลืองานเทคโนโลยีกับเพื่อนครู งานประชาสัมพันธ์ เวรประจำวัน และงานส่งเสริมสุขภาพ ต่อด้วยการสื่อสารและใช้เทคโนโลยีให้เหมาะกับผู้เรียน โดยอ้างอิงบทบาทที่ระบุในรายงาน',
+    };
+    const selected = stops[active];
+    liveState.current = {
+      index: active,
+      total: stops.length,
+      title: selected.name,
+      note: scripts[selected.id] || slides[selected.note].note,
+      nextTitle: stops[active + 1]?.name || null,
+      photoId: slides[selected.note].photos[0]?.id || 55,
+    };
+    channel.current?.postMessage({ type: 'state', state: liveState.current });
+  }, [active]);
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const reveal = () => {
+      setDockVisible(true);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (!document.querySelector('.presenter-dock :focus-visible'))
+          setDockVisible(false);
+      }, 3200);
+    };
+    reveal();
+    window.addEventListener('pointermove', reveal, { passive: true });
+    window.addEventListener('pointerdown', reveal, { passive: true });
+    window.addEventListener('keydown', reveal);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('pointermove', reveal);
+      window.removeEventListener('pointerdown', reveal);
+      window.removeEventListener('keydown', reveal);
+    };
   }, []);
   const fullscreen = useCallback(async () => {
     try {
@@ -144,15 +223,6 @@ export default function Home() {
           '--marquee-shift',
           `${Math.max(-220, Math.min(220, (h * 0.5 - y) * 0.2))}px`,
         );
-        const t = about.current?.getBoundingClientRect().top || 0;
-        const p = Math.max(0, Math.min(1, (h * 0.8 - t) / (h * 0.75)));
-        about.current
-          ?.querySelectorAll<HTMLElement>('[data-word]')
-          .forEach((el, i) => {
-            el.style.opacity = String(
-              0.23 + 0.77 * Math.max(0, Math.min(1, p * 8 - i * 0.65)),
-            );
-          });
         root.current
           ?.querySelectorAll<HTMLElement>('.project-card')
           .forEach((el, i) => {
@@ -160,7 +230,10 @@ export default function Home() {
             const overlap = next
               ? Math.max(
                   0,
-                  Math.min(1, (h - next.getBoundingClientRect().top) / h),
+                  Math.min(
+                    1,
+                    (h * 0.35 - next.getBoundingClientRect().top) / (h * 0.35),
+                  ),
                 )
               : 0;
             el.style.setProperty('--card-scale', String(1 - overlap * 0.035));
@@ -209,9 +282,11 @@ export default function Home() {
         e.preventDefault();
         void fullscreen();
       }
-      if (e.key.toLowerCase() === 'n') setNotes((v) => !v);
+      if (e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        openPresenter();
+      }
       if (e.key.toLowerCase() === 'g') setMenu(true);
-      if (e.key === 'Escape') setNotes(false);
       if (e.key === 'Home') {
         e.preventDefault();
         go(0);
@@ -223,18 +298,24 @@ export default function Home() {
     };
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
-  }, [active, menu, detail, photo, go, fullscreen]);
+  }, [active, menu, detail, photo, go, fullscreen, openPresenter]);
   const openPhoto = (id: number, caption: string) => setPhoto({ id, caption });
   const competency = (
     id: string,
     title: string,
     english: string,
-    items: typeof values | typeof practice,
+    items: ReadonlyArray<readonly [string, string, number]>,
+    offset = 0,
   ) => (
-    <section className={`scene competency ${id}`} id={id}>
+    <section
+      className={`scene competency ${id.startsWith('practice') ? 'practice' : 'values'}`}
+      id={id}
+    >
       <div className="section-top flex justify-between">
         <span>{english}</span>
-        <span>6 องค์ประกอบ / การประเมินครั้งที่ 4</span>
+        <span>
+          องค์ประกอบ {offset + 1}–{offset + 3} จาก 6
+        </span>
       </div>
       <h2 className="display-heading">
         {title}
@@ -247,7 +328,9 @@ export default function Home() {
             onClick={() => setDetail(n)}
             className="competency-row group"
           >
-            <span className="row-number">0{i + 1}</span>
+            <span className="row-number">
+              {String(i + offset + 1).padStart(2, '0')}
+            </span>
             <span className="row-copy">
               <b>{name}</b>
               <span>{description}</span>
@@ -293,10 +376,16 @@ export default function Home() {
           <button onClick={() => go(3)} className="nav-link">
             การปฏิบัติตน
           </button>
-          <button onClick={() => go(5)} className="nav-link">
+          <button
+            onClick={() => go(stops.findIndex((s) => s.id === 'project-1'))}
+            className="nav-link"
+          >
             ผลงานเด่น
           </button>
-          <button onClick={() => go(8)} className="nav-link">
+          <button
+            onClick={() => go(stops.findIndex((s) => s.id === 'outcomes'))}
+            className="nav-link"
+          >
             ผลลัพธ์
           </button>
         </nav>
@@ -373,7 +462,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section id="about" ref={about} className="scene about-section">
+      <section id="about" className="scene about-section">
         <span className="section-top">ABOUT ME / รู้จักครูวรวุฒิ</span>
         <h2 className="display-heading">
           ครูผู้ช่วย<span>✳</span>
@@ -388,9 +477,7 @@ export default function Home() {
             'เป็นพื้นที่ของการทดลอง',
             'และการพัฒนาตนเอง',
           ].map((t) => (
-            <span data-word key={t}>
-              {t}{' '}
-            </span>
+            <span key={t}>{t} </span>
           ))}
         </p>
         <div className="about-facts grid grid-cols-3">
@@ -423,8 +510,32 @@ export default function Home() {
           loading="lazy"
         />
       </section>
-      {competency('values', 'การปฏิบัติตน', '01 / PROFESSIONAL VALUES', values)}
-      {competency('practice', 'การปฏิบัติงาน', '02 / TEACHING PRACTICE', practice)}
+      {competency(
+        'values',
+        'การปฏิบัติตน',
+        '01 / PROFESSIONAL VALUES',
+        values.slice(0, 3),
+      )}
+      {competency(
+        'values-more',
+        'การปฏิบัติตน',
+        '01 / PROFESSIONAL VALUES',
+        values.slice(3),
+        3,
+      )}
+      {competency(
+        'practice',
+        'การปฏิบัติงาน',
+        '02 / TEACHING PRACTICE',
+        practice.slice(0, 3),
+      )}
+      {competency(
+        'practice-more',
+        'การปฏิบัติงาน',
+        '02 / TEACHING PRACTICE',
+        practice.slice(3),
+        3,
+      )}
       <section className="projects-section">
         <div className="project-heading">
           <span className="section-top">SELECTED WORK / ผลงานเด่น</span>
@@ -439,7 +550,7 @@ export default function Home() {
               key={p.name}
               id={`project-${i + 1}`}
               className={`project-card project-${i + 1}`}
-              style={{ top: `${24 + i * 15}px` }}
+              style={{ top: `${20 + i * 10}px` }}
             >
               <div className="project-top">
                 <span className="project-number">0{i + 1}</span>
@@ -591,7 +702,11 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <nav className="presenter-dock" aria-label="ควบคุมการนำเสนอ">
+      <nav
+        className={`presenter-dock ${dockVisible ? '' : 'dock-hidden'}`}
+        aria-label="ควบคุมการนำเสนอ"
+        onFocusCapture={() => setDockVisible(true)}
+      >
         <div className="dock-tools flex items-center">
           <button
             onClick={() => setMenu(true)}
@@ -601,10 +716,9 @@ export default function Home() {
             <Grid2X2 size={19} />
           </button>
           <button
-            onClick={() => setNotes((v) => !v)}
-            aria-label="บันทึกช่วยพูด (N)"
-            title="บันทึกช่วยพูด (N)"
-            aria-pressed={notes}
+            onClick={openPresenter}
+            aria-label="เปิดหน้าต่างผู้บรรยาย (N)"
+            title="เปิดหน้าต่างผู้บรรยาย (N)"
           >
             <NotebookPen size={19} />
           </button>
@@ -634,18 +748,6 @@ export default function Home() {
           </button>
         </div>
       </nav>
-      {notes && (
-        <aside className="speaker-notes">
-          <div className="flex justify-between items-center">
-            <b>{stops[active].name} · บันทึกช่วยพูด</b>
-            <button onClick={() => setNotes(false)} aria-label="ปิดบันทึก">
-              <X size={20} />
-            </button>
-          </div>
-          <p>{slides[stops[active].note].note}</p>
-          <small>บันทึกนี้แสดงบนจอเดียวกัน กด N เพื่อซ่อน</small>
-        </aside>
-      )}
       {notice && (
         <div role="status" className="notice">
           {notice}
