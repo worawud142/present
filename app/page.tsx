@@ -8,6 +8,8 @@ import {
   Maximize,
   Grid2X2,
   NotebookPen,
+  Trophy,
+  Award,
   X,
   Plus,
 } from 'lucide-react';
@@ -58,8 +60,8 @@ const projects = [
     name: 'สื่อที่เห็นภาพ\nและจับต้องได้',
     category: '01 / LEARNING MEDIA',
     desc: 'นำเรื่องคอมพิวเตอร์มาเล่าผ่านสื่อภาพ สัญลักษณ์ และชิ้นงาน',
-    photos: [49, 50, 58],
-    captions: ['สื่อโปรแกรมสำนักงาน', 'สัญลักษณ์และผังงาน', 'ชิ้นงานของผู้เรียน'],
+    photos: [49, 50, 47],
+    captions: ['สื่อโปรแกรมสำนักงาน', 'สัญลักษณ์และผังงาน', 'สื่อการเรียนรู้ที่จัดทำขึ้น'],
     detail: 9,
     tags: ['Word · PowerPoint · Excel', 'เรียนรู้ผ่านชิ้นงาน'],
   },
@@ -67,8 +69,8 @@ const projects = [
     name: 'ทักษะเล็ก ๆ\nที่ต่อยอดได้',
     category: '02 / INTERACTIVE LEARNING',
     desc: 'แอปพลิเคชันฝึกใช้เมาส์ เรียนรู้จากการคลิกและการฝึกซ้ำ',
-    photos: [31, 56, 52],
-    captions: ['การฝึกใช้คอมพิวเตอร์', 'ให้คำแนะนำระหว่างเรียน', 'แอปพลิเคชันฝึกใช้เมาส์'],
+    photos: [31, 32, 52],
+    captions: ['การฝึกใช้คอมพิวเตอร์', 'บรรยากาศการฝึกปฏิบัติ', 'แอปพลิเคชันฝึกใช้เมาส์'],
     detail: 10,
     tags: ['คลิก · คลิกขวา · ดับเบิลคลิก', 'กิจกรรมโต้ตอบ'],
   },
@@ -76,25 +78,29 @@ const projects = [
     name: 'คิด ทดลอง\nและลงมือทำ',
     category: '03 / ROBOTICS',
     desc: 'กิจกรรมหุ่นยนต์ที่เปิดโอกาสให้ผู้เรียนสังเกต ทดลอง และเรียนรู้ร่วมกัน',
-    photos: [41, 59, 51],
-    captions: ['การฝึกปฏิบัติด้านหุ่นยนต์', 'การแบ่งปันความรู้', 'กิจกรรมหุ่นยนต์กับผู้เรียน'],
+    photos: [41, 35, 42],
+    captions: ['การฝึกปฏิบัติด้านหุ่นยนต์', 'การเตรียมตัวและพัฒนาทักษะ', 'กิจกรรมและการแข่งขันหุ่นยนต์'],
     detail: 11,
     tags: ['การคิดเป็นลำดับขั้น', 'เรียนรู้ร่วมกัน'],
   },
 ];
 const gallery = [
-  [55, 58, 51, 49, 36, 56],
-  [60, 64, 9, 27, 40, 59],
+  [55, 17, 51, 4, 36, 56],
+  [24, 7, 9, 27, 40, 59],
 ];
 const galleryLabels: Record<number, string> = {
+  3: 'ดูแลนักเรียนในช่วงเช้า',
+  60: 'สนับสนุนงานเทคโนโลยี',
+  63: 'ร่วมดูแลกิจกรรมของโรงเรียน',
+  64: 'ส่งเสริมสุขภาพผู้เรียน',
   55: 'การสอนในห้องคอมพิวเตอร์',
-  58: 'ชิ้นงานของผู้เรียน',
+  17: 'ร่วมกิจกรรมกับชุมชน',
   51: 'กิจกรรมหุ่นยนต์',
-  49: 'สื่อคอมพิวเตอร์',
+  4: 'ดูแลช่วยเหลือนักเรียน',
   36: 'กิจกรรมในชั้นเรียน',
   56: 'การดูแลระหว่างเรียน',
-  60: 'ร่วมงานกับเพื่อนครู',
-  64: 'ส่งเสริมสุขภาพ',
+  24: 'ประชุมและทำงานร่วมกัน',
+  7: 'กิจกรรมคุณธรรม',
   9: 'กิจกรรมวัฒนธรรม',
   27: 'ดูแลพื้นที่ส่วนรวม',
   40: 'พัฒนาตนเอง',
@@ -612,7 +618,7 @@ export default function Home() {
           className="hero-proof hero-proof-award"
           onClick={() => setCertificate(certificateGroups.achievements[0])}
         >
-          <img src="/certificates/robotics-champion.png" alt="" />
+          <span className="hero-proof-icon" aria-hidden="true"><Trophy size={28} /></span>
           <span>
             <small>STUDENT OUTCOME</small>
             <b>ชนะเลิศหุ่นยนต์</b>
@@ -624,7 +630,7 @@ export default function Home() {
           className="hero-proof hero-proof-practice"
           onClick={() => setCertificate(certificateGroups.achievements[1])}
         >
-          <img src="/certificates/best-practice-indigo.jpg" alt="" />
+          <span className="hero-proof-icon" aria-hidden="true"><Award size={28} /></span>
           <span>
             <small>BEST PRACTICE</small>
             <b>สีสวยด้วยคราม</b>
@@ -723,14 +729,14 @@ export default function Home() {
         </button>
         <img
           className="about-photo about-photo-left"
-          src="/photos/image49.webp"
-          alt="สื่อคอมพิวเตอร์"
+          src="/photos/image14.webp"
+          alt="การทำงานร่วมกับคณะครู"
           loading="lazy"
         />
         <img
           className="about-photo about-photo-right"
-          src="/photos/image51.webp"
-          alt="กิจกรรมหุ่นยนต์"
+          src="/photos/image39.webp"
+          alt="การได้รับการยกย่องในวิชาชีพ"
           loading="lazy"
         />
       </section>
@@ -850,7 +856,7 @@ export default function Home() {
           {[
             { id: 58, title: 'ผู้เรียน', text: 'ได้ฝึกปฏิบัติและสร้างชิ้นงาน', n: 12 },
             {
-              id: 49,
+              id: 66,
               title: 'การเรียนรู้',
               text: 'มีสื่อและกิจกรรมคอมพิวเตอร์ที่หลากหลาย',
               n: 9,
@@ -934,7 +940,7 @@ export default function Home() {
           </button>
         </div>
         <div className="closing-strip">
-          {[55, 51, 58, 60].map((id) => (
+          {[3, 60, 63, 64].map((id) => (
             <img
               key={id}
               src={`/photos/image${id}.webp`}
