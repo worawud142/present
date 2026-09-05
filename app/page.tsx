@@ -8,8 +8,6 @@ import {
   Maximize,
   Grid2X2,
   NotebookPen,
-  Trophy,
-  Award,
   X,
   Plus,
 } from 'lucide-react';
@@ -624,7 +622,7 @@ export default function Home() {
           className="hero-proof hero-proof-award"
           onClick={() => setCertificate(certificateGroups.achievements[0])}
         >
-          <span className="hero-proof-icon" aria-hidden="true"><Trophy size={28} /></span>
+          <img src="/certificates/robotics-champion.png" alt="" />
           <span>
             <small>STUDENT OUTCOME</small>
             <b>ชนะเลิศหุ่นยนต์</b>
@@ -636,7 +634,7 @@ export default function Home() {
           className="hero-proof hero-proof-practice"
           onClick={() => setCertificate(certificateGroups.achievements[1])}
         >
-          <span className="hero-proof-icon" aria-hidden="true"><Award size={28} /></span>
+          <img src="/certificates/best-practice-indigo.jpg" alt="" />
           <span>
             <small>BEST PRACTICE</small>
             <b>สีสวยด้วยคราม</b>

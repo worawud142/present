@@ -230,15 +230,6 @@
   border-radius: 14px;
   object-fit: cover;
 }
-.hero-proof-icon {
-  display: grid;
-  place-items: center;
-  width: 76px;
-  height: 66px;
-  border-radius: 14px;
-  background: linear-gradient(145deg, #efe6f8, #f7dce9);
-  color: #70418e;
-}
 .hero-proof > span {
   display: flex;
   min-width: 0;
@@ -418,11 +409,6 @@
     transform: rotate(-3deg);
   }
   .hero-proof-award img {
-    width: 52px;
-    height: 48px;
-    border-radius: 10px;
-  }
-  .hero-proof-award .hero-proof-icon {
     width: 52px;
     height: 48px;
     border-radius: 10px;
